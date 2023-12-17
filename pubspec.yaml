@@ -1,5 +1,5 @@
 name: flutter_serial
-description: A new Flutter plugin project.
+description: This Plugin uses c library and java on the android side for serial communication
 version: 0.0.1
 homepage: https://github.com/arunkumarchauhan/flutter_serial
 
