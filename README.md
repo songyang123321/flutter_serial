@@ -15,14 +15,7 @@ This PlugIn enables the communication with the
 **UART**
 
 **Supported platforms:**
-* Android :
-- arm65-v8a
-- armeabi
-- armeabi-v7a
-- mips
-- mips64
-- x86
-- x86_64
+* Android :arm65-v8a, armeabi,armeabi-v7a,mips,mips64,x86,x86_64
 
 ## Connection Setup
 - User Interface is connected to rs232 converter which sending data to machine receiving the data(You can use any Serial data receiving software for testing purposes.I have used Realterm : Serial Capture Program that is available for windows)
