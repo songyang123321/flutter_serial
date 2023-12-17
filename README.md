@@ -5,7 +5,7 @@ An Android Plugin for Serial Communication which allow you to read
 and write the data through the available ports
 The supported features are:
 * Listing the available serial ports on the device, including USB to serial adapters
-* Configuring serial ports (baud rate, stop bits, permission, ...)
+* Configuring serial ports (baud rate, input type)
 * Providing standard InputStream and OutputStream
 # Description
 This PlugIn enables the communication with the
@@ -13,7 +13,6 @@ This PlugIn enables the communication with the
 **RS232**
 **RS485**
 **UART**
-
 
 **Supported platforms:**
 * Android :
@@ -24,6 +23,16 @@ This PlugIn enables the communication with the
 - mips64
 - x86
 - x86_64
+
+## Connection Setup
+- User Interface is connected to rs232 converter which sending data to machine receiving the data(You can use any Serial data receiving software for testing purposes.I have used Realterm : Serial Capture Program that is available for windows)
+- USB-A to micro USB cable  used in the image  to connect Commercial Android intelligent display terminal running Android 11 operating system with laptop for debugging purposes only.
+  ![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet.png?raw=true)
+  ![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet_connection.jpeg?raw=true)
+
+
+
+
 
 
 ## Features
@@ -38,7 +47,7 @@ dependencies:
 ~~~
 include the usbserial package at the top of your dart file.
 ~~~
-import  'package:serial_communication/serial_communication.dart';
+import  'package:flutter_serial/flutter_serial.dart';
 ~~~
 ## ❓ Usage
 If you encounter any issues please refer to the API docs and the sample code in the  `example`  directory.

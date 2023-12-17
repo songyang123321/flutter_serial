@@ -1,10 +1,10 @@
-![Pub](https://img.shields.io/pub/v/serial_communication)
+
 # Serial communication!
 An Android Plugin for Serial Communication which allow you to read
 and write the data through the available ports
 The supported features are:
 * Listing the available serial ports on the device, including USB to serial adapters
-* Configuring serial ports (baud rate, stop bits, permission, ...)
+* Configuring serial ports (baud rate, input type)
 * Providing standard InputStream and OutputStream
 # Description
 This PlugIn enables the communication with the
@@ -18,8 +18,12 @@ This PlugIn enables the communication with the
 * Android
 
 ## Connection Setup
+- User Interface is connected to rs232 converter which sending data to machine receiving the data(You can use any Serial data receiving software for testing purposes.I have used Realterm : Serial Capture Program that is available for windows)
+- USB-A to micro USB cable  used in the image  to connect Commercial Android intelligent display terminal running Android 11 operating system with laptop for debugging purposes only. 
 ![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet.png?raw=true)
 ![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet_connection.jpeg?raw=true)
+
+
 
 ## Getting Started
 Add a dependency to your pubspec.yaml
@@ -32,7 +36,7 @@ include the usbserial package at the top of your dart file.
 import  'package:flutter_serial/flutter_serial.dart';
 ~~~
 ## ❓ Usage
-If you encounter any issues please refer to the API docs and the sample code in the  `example`  directory before opening a request on Github.
+If you encounter any issues please refer to the API docs and the sample code in the  `example` .
 
 ### Example app
 The  [`example`](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/lib/main.dartt)  directory has a sample application that demonstrates the features of this plugin.
@@ -149,24 +153,7 @@ super.dispose();
    For hex_String format
    call the `DataFormat.HEX_STRING`
 
-# Contribution
 
-Any help from the open-source community is always welcome and needed:
-
--   Found an issue?
-    -   Please fill a bug report with details.
--   Wish a feature?
-    -   Open a feature request with use cases.
--   Are you using and liking the project?
-    -   Promote the project: create an article, do a post or make a donation.
--   Are you a developer?
-    -   Fix a bug and send a pull request.
-    -   Implement a new feature.
-    -   Improve the Unit Tests.
--   Have you already helped in any way?
-    -   **Many thanks from me, the contributors and everybody that uses this project!**
-- [BJS MB Dev](https://github.com/bjs-mb-dev)
-- [Zain Ul Abideen](https://github.com/zain4bjs) 
      
 
 
