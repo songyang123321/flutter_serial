@@ -9,8 +9,7 @@ abstract class FlutterSerialPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static FlutterSerialPlatform _instance =
-  MethodChannelFlutterSerial();
+  static FlutterSerialPlatform _instance = MethodChannelFlutterSerial();
 
   /// The default instance of [FlutterSerialPlatform] to use.
   ///
@@ -37,8 +36,8 @@ abstract class FlutterSerialPlatform extends PlatformInterface {
   /// use during improvement.
   Future<String?> openPort(
       {required DataFormat dataFormat,
-        required String serialPort,
-        required int baudRate}) {
+      required String serialPort,
+      required int baudRate}) {
     throw UnimplementedError('openSerial() has not been implemented.');
   }
 
