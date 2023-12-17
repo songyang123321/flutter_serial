@@ -17,12 +17,9 @@ This PlugIn enables the communication with the
 **Supported platforms:**
 * Android
 
-## Video tutorial
-In order to completely understand you can view our sample video in which we are using an android Lcm module.
-Click the image below to watch the video:
-
-[//]: # ()
-[//]: # ([![IMAGE ALT TEXT]&#40;https://i.postimg.cc/T1YCPsSH/Screenshot-2022-09-12-at-11-16-36-AM.png&#41;]&#40;https://www.youtube.com/watch?v=GeNuR-YH6ms"&#41;)
+## Connection Setup
+![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet.png?raw=true)
+![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet_connection.jpeg?raw=true)
 
 ## Getting Started
 Add a dependency to your pubspec.yaml
@@ -37,14 +34,13 @@ import  'package:flutter_serial/flutter_serial.dart';
 ## ❓ Usage
 If you encounter any issues please refer to the API docs and the sample code in the  `example`  directory before opening a request on Github.
 
-### Example app[](https://pub.dev/packages/flutter_local_notifications#example-app)
-
-The  [`example`](https://github.com/mahad555/serialCommunication/blob/main/example/lib/main.dart)  directory has a sample application that demonstrates the features of this plugin.
+### Example app
+The  [`example`](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/lib/main.dartt)  directory has a sample application that demonstrates the features of this plugin.
 ***
 
+
+
 ## 🔧 Android Setup #
-
-
 
 **Initialisation**  
 The first step is to call the startSerial() method and subscribe the
