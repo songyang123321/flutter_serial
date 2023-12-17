@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Serial Communication',
+      title: 'Flutter Serial Communication',
       home: HomePage(),
     );
   }
@@ -38,22 +38,22 @@ class _HomePageState extends State<HomePage> {
   List<String>? serialList = [];
   DataFormat format = DataFormat.ASCII;
   String message = "";
-  FlutterSerial serialCommunication = FlutterSerial();
-
+  FlutterSerial flutterSerial = FlutterSerial();
+  int selectedNavigationIndex = 0;
   @override
   void initState() {
     super.initState();
-    serialCommunication.startSerial().listen(_updateConnectionStatus);
+    flutterSerial.startSerial().listen(_updateConnectionStatus);
     getSerialList();
   }
 
   getSerialList() async {
-    serialList = await serialCommunication.getAvailablePorts();
+    serialList = await flutterSerial.getAvailablePorts();
   }
 
   @override
   void dispose() {
-    serialCommunication.destroy();
+    flutterSerial.destroy();
     super.dispose();
   }
 
@@ -62,99 +62,291 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: const Text('Serial Communication Example'),
+          title: const Text('Flutter Serial Communication Example'),
         ),
-        body: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                setupButton(context),
-                const Divider(),
-                operations(),
-                const Divider(),
-                sendCommand(),
-                const Divider(),
-                response()
-              ],
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 10,
             ),
+            Expanded(
+                child: Row(
+              children: [
+                NavigationRail(
+                  destinations: [
+                    buildNavigationRailDestination(
+                        icon: Icons.settings, index: 0, labelText: "Setting"),
+                    buildNavigationRailDestination(
+                        icon: Icons.print, index: 1, labelText: "Print"),
+                  ],
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      selectedNavigationIndex = value;
+                    });
+                  },
+                  selectedIndex: selectedNavigationIndex,
+                ),
+                getChild()
+              ],
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  NavigationRailDestination buildNavigationRailDestination(
+          {required IconData icon,
+          required String labelText,
+          required int index}) =>
+      NavigationRailDestination(
+          icon: Icon(
+            icon,
+            size: 40,
+            color:
+                index == selectedNavigationIndex ? Colors.blue : Colors.black,
+          ),
+          label: Text(labelText));
+
+  Widget _buildBody(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height,
+      width: size.width - 80,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Divider(),
+              sendCommand(),
+              const Divider(),
+              response()
+            ],
           ),
         ),
       ),
     );
   }
 
-  InkWell setupButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        settingModalBottomSheet(context: context, list: serialList);
-      },
-      child: Material(
-        elevation: 4,
-        borderRadius: BorderRadius.circular(15),
-        color: const Color(0xFFF2F2F7),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(
-                "Tap to setup",
-                style: mediumStyle.apply(fontSizeFactor: 1),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: 'Device: \n',
-                        style: mediumStyle.apply(color: Colors.blue),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: selectedPort,
-                            style: mediumStyle.apply(color: Colors.black54),
-                          )
-                        ],
-                      ),
+  Widget getChild() {
+    switch (selectedNavigationIndex) {
+      case 0:
+        return setupButton(context);
+
+      case 1:
+        return _buildBody(context);
+      default:
+        return setupButton(context);
+    }
+  }
+
+  Widget setupButton(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return SizedBox(
+      width: size.width - 80,
+      height: size.height,
+      child: Column(
+        children: [
+          const Divider(),
+          operations(),
+          StatefulBuilder(
+            builder: (context, state) {
+              return Container(
+                  height: 400,
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(26),
+                      topRight: Radius.circular(26),
                     ),
-                    RichText(
-                      text: TextSpan(
-                        text: 'Baud Rate: \n',
-                        style: mediumStyle.apply(color: Colors.blue),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "$selectedBaudRate",
-                            style: mediumStyle.apply(color: Colors.black54),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  text: 'Data Format: ',
-                  style: mediumStyle.apply(color: Colors.blue),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: format.name,
-                      style: mediumStyle.apply(
-                        color: Colors.black54,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
+                  ),
+                  child: ListView(
+                      physics: const ScrollPhysics(),
+                      shrinkWrap: true,
+                      children: [
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            verticalDirection: VerticalDirection.down,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Center(
+                                    child: Container(
+                                  height: 5,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(90),
+                                  ),
+                                )),
+                              ),
+                              const Divider(),
+                              listTile(
+                                  widget: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      isExpanded: true,
+                                      borderRadius: BorderRadius.circular(10),
+                                      hint: Text(
+                                        selectedPort,
+                                        style: mediumStyle.apply(
+                                            fontSizeFactor: 0.9),
+                                      ),
+                                      items: serialList!.map((String? value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child:
+                                              Text(value!, style: mediumStyle),
+                                        );
+                                      }).toList(),
+                                      onChanged: (p0) {
+                                        updateSelectPort(state, p0!);
+                                      },
+                                    ),
+                                  ),
+                                  title: "Serial Port:"),
+                              listTile(
+                                  widget: DropdownButtonHideUnderline(
+                                    child: DropdownButton<int>(
+                                      isExpanded: true,
+                                      borderRadius: BorderRadius.circular(10),
+                                      hint: Text(
+                                        selectedBaudRate.toString(),
+                                        style: mediumStyle.apply(
+                                            fontSizeFactor: 0.9),
+                                      ),
+                                      menuMaxHeight: 400.0,
+                                      items: flutterSerial.baudRateList
+                                          .map((int? value) {
+                                        return DropdownMenuItem<int>(
+                                          value: value,
+                                          child: Text(value.toString(),
+                                              style: mediumStyle),
+                                        );
+                                      }).toList(),
+                                      onChanged: (p0) {
+                                        updateSelectBaudRate(state, p0!);
+                                      },
+                                    ),
+                                  ),
+                                  title: 'Select the BaudRate:'),
+                              listTile(
+                                widget: Row(
+                                  children: [
+                                    Expanded(
+                                      child: CheckboxListTile(
+                                        title: const Text(
+                                          "ASCII",
+                                        ),
+                                        value: format == DataFormat.ASCII
+                                            ? true
+                                            : false,
+                                        onChanged: (newValue) {
+                                          updateDataFormat(
+                                              state, DataFormat.ASCII);
+                                        },
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: CheckboxListTile(
+                                        title: const Text(
+                                          "HEX String",
+                                        ),
+                                        value: format == DataFormat.HEX_STRING
+                                            ? true
+                                            : false,
+                                        onChanged: (newValue) {
+                                          updateDataFormat(
+                                              state, DataFormat.HEX_STRING);
+                                        },
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                title: "Data Format",
+                              ),
+                            ])
+                      ]));
+            },
           ),
-        ),
+        ],
       ),
     );
+
+    // return InkWell(
+    //   onTap: () {
+    //     settingModalBottomSheet(context: context, list: serialList);
+    //   },
+    //   child: Material(
+    //     elevation: 4,
+    //     borderRadius: BorderRadius.circular(15),
+    //     color: const Color(0xFFF2F2F7),
+    //     child: Padding(
+    //       padding: const EdgeInsets.all(8.0),
+    //       child: Column(
+    //         children: [
+    //           Text(
+    //             "Tap to setup",
+    //             style: mediumStyle.apply(fontSizeFactor: 1),
+    //           ),
+    //           Padding(
+    //             padding: const EdgeInsets.all(8.0),
+    //             child: Row(
+    //               mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //               children: [
+    //                 RichText(
+    //                   text: TextSpan(
+    //                     text: 'Device: \n',
+    //                     style: mediumStyle.apply(color: Colors.blue),
+    //                     children: <TextSpan>[
+    //                       TextSpan(
+    //                         text: selectedPort,
+    //                         style: mediumStyle.apply(color: Colors.black54),
+    //                       )
+    //                     ],
+    //                   ),
+    //                 ),
+    //                 RichText(
+    //                   text: TextSpan(
+    //                     text: 'Baud Rate: \n',
+    //                     style: mediumStyle.apply(color: Colors.blue),
+    //                     children: <TextSpan>[
+    //                       TextSpan(
+    //                         text: "$selectedBaudRate",
+    //                         style: mediumStyle.apply(color: Colors.black54),
+    //                       )
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //           RichText(
+    //             text: TextSpan(
+    //               text: 'Data Format: ',
+    //               style: mediumStyle.apply(color: Colors.blue),
+    //               children: <TextSpan>[
+    //                 TextSpan(
+    //                   text: format.name,
+    //                   style: mediumStyle.apply(
+    //                     color: Colors.black54,
+    //                   ),
+    //                 )
+    //               ],
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget response() {
@@ -175,7 +367,7 @@ class _HomePageState extends State<HomePage> {
                 button(
                     name: "Empty",
                     onPress: () {
-                      serialCommunication.clearRead();
+                      flutterSerial.clearRead();
                     }),
               ],
             ),
@@ -191,7 +383,7 @@ class _HomePageState extends State<HomePage> {
                 button(
                     name: "Empty",
                     onPress: () {
-                      serialCommunication.clearLog();
+                      flutterSerial.clearLog();
                     }),
               ],
             ),
@@ -246,7 +438,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: TextField(
                 decoration:
-                const InputDecoration(hintText: "Write send Command"),
+                    const InputDecoration(hintText: "Write send Command"),
                 onChanged: (value) {
                   message = value;
                 },
@@ -255,7 +447,7 @@ class _HomePageState extends State<HomePage> {
             button(
                 name: "Send",
                 onPress: () {
-                  serialCommunication.sendCommand(message: message);
+                  flutterSerial.sendCommand(message: message);
                 })
           ],
         ),
@@ -285,7 +477,7 @@ class _HomePageState extends State<HomePage> {
                 button(
                     name: "Open",
                     onPress: () {
-                      serialCommunication.openPort(
+                      flutterSerial.openPort(
                           dataFormat: format,
                           serialPort: selectedPort,
                           baudRate: selectedBaudRate);
@@ -293,7 +485,7 @@ class _HomePageState extends State<HomePage> {
                 button(
                     name: "Close",
                     onPress: () {
-                      serialCommunication.closePort();
+                      flutterSerial.closePort();
                     })
               ],
             ),
@@ -354,13 +546,13 @@ class _HomePageState extends State<HomePage> {
                                 padding: const EdgeInsets.all(12.0),
                                 child: Center(
                                     child: Container(
-                                      height: 5,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius: BorderRadius.circular(90),
-                                      ),
-                                    )),
+                                  height: 5,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(90),
+                                  ),
+                                )),
                               ),
                               const Divider(),
                               listTile(
@@ -377,7 +569,7 @@ class _HomePageState extends State<HomePage> {
                                         return DropdownMenuItem<String>(
                                           value: value,
                                           child:
-                                          Text(value!, style: mediumStyle),
+                                              Text(value!, style: mediumStyle),
                                         );
                                       }).toList(),
                                       onChanged: (p0) {
@@ -397,7 +589,7 @@ class _HomePageState extends State<HomePage> {
                                             fontSizeFactor: 0.9),
                                       ),
                                       menuMaxHeight: 400.0,
-                                      items: serialCommunication.baudRateList
+                                      items: flutterSerial.baudRateList
                                           .map((int? value) {
                                         return DropdownMenuItem<int>(
                                           value: value,
@@ -427,7 +619,7 @@ class _HomePageState extends State<HomePage> {
                                               state, DataFormat.ASCII);
                                         },
                                         controlAffinity:
-                                        ListTileControlAffinity.leading,
+                                            ListTileControlAffinity.leading,
                                       ),
                                     ),
                                     Expanded(
@@ -443,7 +635,7 @@ class _HomePageState extends State<HomePage> {
                                               state, DataFormat.HEX_STRING);
                                         },
                                         controlAffinity:
-                                        ListTileControlAffinity.leading,
+                                            ListTileControlAffinity.leading,
                                       ),
                                     ),
                                   ],

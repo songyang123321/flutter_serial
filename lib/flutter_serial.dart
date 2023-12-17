@@ -5,7 +5,7 @@ import 'dart:convert';
 ///DataFormat for TX and RX
 enum DataFormat { ASCII, HEX_STRING }
 
-/// SerialCommunication handles the serial communication.
+/// FlutterSerial handles the serial communication.
 class FlutterSerial {
   Stream<SerialResponse> startSerial() {
     return FlutterSerialPlatform.instance.startSerial();

@@ -54,12 +54,12 @@ StreamSubscription
 
 startSerial method  will open the transaction stream
 ~~~
-FlutterSerial serialCommunication = FlutterSerial();
+FlutterSerial flutterSerial = FlutterSerial();
 
   @override
   void initState() {
     super.initState();
-   serialCommunication.startSerial().listen(_updateConnectionStatus);
+   flutterSerial.startSerial().listen(_updateConnectionStatus);
     getSerialList();
   }
   
@@ -88,7 +88,7 @@ In Serial Response you will get the following type
 The getAvailablePorts() method  will return you all the  
 available ports on a device
 ~~~
-serialList = await  serialCommunication.getAvailablePorts();
+serialList = await  flutterSerial.getAvailablePorts();
 ~~~
 
 ## **Open**
@@ -97,24 +97,24 @@ openPort method  will open the serial communication
 Its has 3 required parameter
 { **DataFormat** dataFormat, **String** serialPort, **int** baudRate }
 ~~~
-serialCommunication.openPort(
+flutterSerial.openPort(
 dataFormat: DataFormat.ASCII,
 serialPort: serialList.first,
-baudRate: serialCommunication.baudRateList.first)
+baudRate: flutterSerial.baudRateList.first)
 ~~~
 
 ## **Close**
 
 closePort method  will close the port if you have opened any port
 ~~~
-serialCommunication.closePort();
+flutterSerial.closePort();
 ~~~
 
 ## **Send Command**
 sendCommand method  will send your message
 Its has 1 required parameter  {**String**  message}
 ~~~
-serialCommunication.sendCommand(message: "message");
+flutterSerial.sendCommand(message: "message");
 ~~~
 
 
@@ -124,8 +124,8 @@ serialCommunication.sendCommand(message: "message");
 **clearRead** method  will clear the Read channel
 
 ~~~
-serialCommunication.clearLog();
-serialCommunication.clearRead();
+flutterSerial.clearLog();
+flutterSerial.clearRead();
 ~~~
 
 ## Destroy
@@ -133,7 +133,7 @@ serialCommunication.clearRead();
 ~~~
 @override
 void  dispose() {
-serialCommunication.destroy();
+flutterSerial.destroy();
 super.dispose();
 }
 ~~~
