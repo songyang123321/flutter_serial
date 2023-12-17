@@ -1,6 +1,6 @@
 name: flutter_serial
 description: This Plugin uses c library and java on the android side for serial communication
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/arunkumarchauhan/flutter_serial
 
 environment:
@@ -16,6 +16,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_plugin_tools: ^0.6.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

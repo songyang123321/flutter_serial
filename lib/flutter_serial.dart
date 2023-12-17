@@ -1,4 +1,3 @@
-
 import 'flutter_serial_platform_interface.dart';
 import 'dart:convert';
 
@@ -18,8 +17,8 @@ class FlutterSerial {
   /// The [serialPort] and [baudRate] arguments cannot be null.
   Future<String?> openPort(
       {DataFormat? dataFormat,
-        required String serialPort,
-        required int baudRate}) {
+      required String serialPort,
+      required int baudRate}) {
     return FlutterSerialPlatform.instance.openPort(
         dataFormat: dataFormat ?? DataFormat.ASCII,
         serialPort: serialPort,
