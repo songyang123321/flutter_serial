@@ -1,5 +1,6 @@
 
-# Serial communication!
+# Flutter Serial!
+
 An Android Plugin for Serial Communication which allow you to read
 and write the data through the available ports
 The supported features are:
@@ -13,38 +14,50 @@ This PlugIn enables the communication with the
 **RS485**
 **UART**
 
-
 **Supported platforms:**
-* Android
+* Android :
+- arm65-v8a
+- armeabi
+- armeabi-v7a
+- mips
+- mips64
+- x86
+- x86_64
 
 ## Connection Setup
 - User Interface is connected to rs232 converter which sending data to machine receiving the data(You can use any Serial data receiving software for testing purposes.I have used Realterm : Serial Capture Program that is available for windows)
-- USB-A to micro USB cable  used in the image  to connect Commercial Android intelligent display terminal running Android 11 operating system with laptop for debugging purposes only. 
-![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet.png?raw=true)
-![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet_connection.jpeg?raw=true)
+- USB-A to micro USB cable  used in the image  to connect Commercial Android intelligent display terminal running Android 11 operating system with laptop for debugging purposes only.
+  ![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet.png?raw=true)
+  ![alt text](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/assets/tablet_connection.jpeg?raw=true)
 
 
 
-## Getting Started
+
+
+
+## Features
+- Doesn't require root in Android
+- Easy to use
+- Using listener for reading message
+-
 Add a dependency to your pubspec.yaml
 ~~~
 dependencies:
-	flutter_serial: version number
+	flutter_serial: latest_version
 ~~~
 include the usbserial package at the top of your dart file.
 ~~~
 import  'package:flutter_serial/flutter_serial.dart';
 ~~~
 ## ❓ Usage
-If you encounter any issues please refer to the API docs and the sample code in the  `example` .
+If you encounter any issues please refer to the API docs and the sample code in the  `example`  directory.
 
-### Example app
-The  [`example`](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/lib/main.dartt)  directory has a sample application that demonstrates the features of this plugin.
+The  [`example`](https://github.com/arunkumarchauhan/flutter_serial/blob/main/example/lib/main.dart)  directory has a sample application that demonstrates the features of this plugin.
 ***
 
-
-
 ## 🔧 Android Setup #
+
+
 
 **Initialisation**  
 The first step is to call the startSerial() method and subscribe the
@@ -72,8 +85,8 @@ receivedData = result.readChannel ?? "";
 By calling the startSerial() it will provide  you with the SerialResponse in the form of stream data
 
 **SerialResponse**
-In Serial Response you will get the following type  
-1)  Log Channel (type:String)  
+In Serial Response you will get the following type
+1)  Log Channel (type:String)
 2)  Read Channel  (type:String)
 
 1) Log Channel:
@@ -152,6 +165,7 @@ super.dispose();
 
    For hex_String format
    call the `DataFormat.HEX_STRING`
+
 
 
      
