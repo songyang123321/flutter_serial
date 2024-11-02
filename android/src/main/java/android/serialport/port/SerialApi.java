@@ -55,10 +55,10 @@ class SerialApi {
      * @param reader
      */
     public boolean open(BaseReader reader) {
-        log(SerialApiManager.port, port, isAscii,
-                new StringBuffer().append("Baud rate：")
-                        .append(baudRate).append(" flag bit ：").append(flags)
-                        .append(" Start the serial port"));
+//        log(SerialApiManager.port, port, isAscii,
+//                new StringBuffer().append("Baud rate：")
+//                        .append(baudRate).append(" flag bit ：").append(flags)
+//                        .append(" Start the serial port"));
         if (open) {
             log(SerialApiManager.port, port, isAscii, new StringBuffer().append("Boot failure: Serial port started"));
             return open;
@@ -80,7 +80,7 @@ class SerialApi {
                 readThread = new ReadThread(isAscii, reader);
                 readThread.start();
                 open = true;
-                log(SerialApiManager.port, port, isAscii, new StringBuffer().append("starting success"));
+//                log(SerialApiManager.port, port, isAscii, new StringBuffer().append("starting success"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,7 +97,7 @@ class SerialApi {
     public void setReadCode(boolean isAscii) {
         if (readThread != null) {
             readThread.isAscii = isAscii;
-            log(SerialApiManager.port, port, readThread.isAscii, new StringBuffer().append("Modify data format：").append(isAscii ? "ASCII" : "HexString"));
+//            log(SerialApiManager.port, port, readThread.isAscii, new StringBuffer().append("Modify data format：").append(isAscii ? "ASCII" : "HexString"));
         }
     }
 
