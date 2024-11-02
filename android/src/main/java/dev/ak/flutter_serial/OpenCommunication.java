@@ -45,20 +45,21 @@ public class OpenCommunication  {
         spManager = SerialApiManager.getInstances().setLogInterceptor(new LogInterceptorSerialPort() {
             @Override
             public void log(@SerialApiManager.Type final String type, final String port, final boolean isAscii, final String log) {
-                Log.d("SerialPortLog", new StringBuffer()
-                        .append("Serial Port ：").append(port)
-                        .append("\ndata format ：").append(isAscii ? "ascii" : "hexString")
-                        .append("\ntype：").append(type)
-                        .append("messages：").append(log).toString());
-                logChannel += "\n" + (new StringBuffer()
-                        .append(" ").append(port)
-                        .append(" ").append(isAscii ? "ascii" : "hexString")
-                        .append(" ").append(type)
-                        .append("：").append(log)
-                        .append("\n").toString());
+//                Log.d("SerialPortLog", new StringBuffer()
+//                        .append("Serial Port ：").append(port)
+//                        .append("\ndata format ：").append(isAscii ? "ascii" : "hexString")
+//                        .append("\ntype：").append(type)
+//                        .append("messages：").append(log).toString());
+//                logChannel += "\n" + (new StringBuffer()
+//                        .append(" ").append(port)
+//                        .append(" ").append(isAscii ? "ascii" : "hexString")
+//                        .append(" ").append(type)
+//                        .append("：").append(log)
+//                        .append("\n").toString());
 
                 Map<String,String>dataMap= new HashMap<String,String>();
-                dataMap.put("LogChannel",logChannel);
+                dataMap.put("LogChannel",log);
+//                dataMap.put("LogChannel",logChannel);
                 dataMap.put("readChannel",readChannel);
                 CustomEventHandler.sendEvent(dataMap);
             }
@@ -67,15 +68,16 @@ public class OpenCommunication  {
         baseReader = new BaseReader() {
             @Override
             protected void onParse(final String port, final boolean isAscii, final String read) {
-                Log.d("SerialPortRead", new StringBuffer()
-                        .append(port).append("/").append(isAscii ? "ascii" : "hex")
-                        .append(" read：").append(read).append("\n").toString());
-                readChannel += "\n" + (new StringBuffer()
-                        .append(port).append("/").append(isAscii ? "ascii" : "hex")
-                        .append(" read：").append(read).append("\n").toString());
+//                Log.d("SerialPortRead", new StringBuffer()
+//                        .append(port).append("/").append(isAscii ? "ascii" : "hex")
+//                        .append(" read：").append(read).append("\n").toString());
+//                readChannel += "\n" + (new StringBuffer()
+//                        .append(port).append("/").append(isAscii ? "ascii" : "hex")
+//                        .append(" read：").append(read).append("\n").toString());
                 Map<String,String>dataMap= new HashMap<String,String>();
                 dataMap.put("LogChannel",logChannel);
-                dataMap.put("readChannel",readChannel);
+//                dataMap.put("readChannel",readChannel);
+                dataMap.put("readChannel",read);
                 CustomEventHandler.sendEvent( dataMap);
 
             }

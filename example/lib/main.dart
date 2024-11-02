@@ -496,6 +496,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _updateConnectionStatus(SerialResponse? result) async {
+    print("------------------------------------");
+    print('---${result?.logChannel}--${result?.logChannel?.length}');
+    print('+++${result?.readChannel}++${result?.readChannel?.length}');
+    print("------------------------------------");
     setState(() {
       logData = result!.logChannel ?? "";
       receivedData = result.readChannel ?? "";
