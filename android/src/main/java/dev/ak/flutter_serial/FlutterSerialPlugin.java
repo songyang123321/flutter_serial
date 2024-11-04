@@ -66,7 +66,8 @@ OpenCommunication communication = new OpenCommunication();
         result.success(list);
         break;
       case "embeddedSerial/open":
-        communication.open(argments.get("serialPort"), Boolean.parseBoolean(argments.get("dataFormat")),Integer.parseInt(argments.get("baudRate")));
+        boolean isOpen = communication.open(argments.get("serialPort"), Boolean.parseBoolean(argments.get("dataFormat")),Integer.parseInt(argments.get("baudRate")));
+        result.success(isOpen);
         break;
       case "embeddedSerial/close":
         communication.close();

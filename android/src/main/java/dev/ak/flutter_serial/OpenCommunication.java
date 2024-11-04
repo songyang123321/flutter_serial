@@ -9,8 +9,6 @@
 package dev.ak.flutter_serial;
 
 
-
-
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -26,12 +24,12 @@ import android.serialport.port.LogInterceptorSerialPort;
 import android.serialport.port.SerialApiManager;
 
 
-public class OpenCommunication  {
+public class OpenCommunication {
     private SerialApiManager spManager;
     private BaseReader baseReader;
     private String currentPort;
     public String logChannel = "";
-    public String readChannel ="";
+    public String readChannel = "";
 
     List<String> entries = new ArrayList<String>();
     List<String> entryValues = new ArrayList<String>();
@@ -57,10 +55,10 @@ public class OpenCommunication  {
 //                        .append("：").append(log)
 //                        .append("\n").toString());
 
-                Map<String,String>dataMap= new HashMap<String,String>();
-                dataMap.put("LogChannel",log);
+                Map<String, String> dataMap = new HashMap<String, String>();
+                dataMap.put("LogChannel", log);
 //                dataMap.put("LogChannel",logChannel);
-                dataMap.put("readChannel",readChannel);
+                dataMap.put("readChannel", readChannel);
                 CustomEventHandler.sendEvent(dataMap);
             }
 
@@ -74,56 +72,58 @@ public class OpenCommunication  {
 //                readChannel += "\n" + (new StringBuffer()
 //                        .append(port).append("/").append(isAscii ? "ascii" : "hex")
 //                        .append(" read：").append(read).append("\n").toString());
-                Map<String,String>dataMap= new HashMap<String,String>();
-                dataMap.put("LogChannel",logChannel);
+                Map<String, String> dataMap = new HashMap<String, String>();
+                dataMap.put("LogChannel", logChannel);
 //                dataMap.put("readChannel",readChannel);
-                dataMap.put("readChannel",read);
-                CustomEventHandler.sendEvent( dataMap);
+                dataMap.put("readChannel", read);
+                CustomEventHandler.sendEvent(dataMap);
 
             }
         };
     }
+
     List<String> sendDeviceData() {
-         SerialPortFinder mSerialPortFinder = new SerialPortFinder();
-         entries=Arrays.asList(mSerialPortFinder.getAllDevicesPath());
-       // entries = List.of(mSerialPortFinder.getAllDevices());
+        SerialPortFinder mSerialPortFinder = new SerialPortFinder();
+        entries = Arrays.asList(mSerialPortFinder.getAllDevicesPath());
+        // entries = List.of(mSerialPortFinder.getAllDevices());
 //        entryValues = List.of(mSerialPortFinder.getAllDevicesPath());
-        entryValues =Arrays.asList(mSerialPortFinder.getAllDevicesPath());
-       return entryValues;
+        entryValues = Arrays.asList(mSerialPortFinder.getAllDevicesPath());
+        return entryValues;
     }
 
 
-    public void open(String name, boolean isAscii, int baudRate) {
+    public boolean open(String name, boolean isAscii, int baudRate) {
         initData();
         String checkPort = name;
+        Log.d("OpenCommunication", "开始打开串口");
         if (TextUtils.isEmpty(checkPort)) {
-            return;
-        } else if (TextUtils.equals(checkPort, "other")) {
-            checkPort = name;
-            if (TextUtils.isEmpty(checkPort)) {
-                return;
-            }
+            Log.d("OpenCommunication", "串口名称不能为空，请检查");
+            return false;
         }
 
         if (TextUtils.equals(currentPort, checkPort)) {
-            return;
+            Log.d("OpenCommunication", "当前串口已打开");
+            return true;
         }
 
         if (!TextUtils.isEmpty(currentPort)) {
             // Close the CurrentPort serial port
+            Log.d("OpenCommunication", "当前已连接串口不为空，断开当前串口");
             spManager.stopSerialPort(currentPort);
         }
 
-        if(entryValues.contains(checkPort)){
+        if (entryValues.contains(checkPort)) {
+            Log.d("OpenCommunication", "已经找到对应串口，开始连接：" + checkPort);
             currentPort = checkPort;
-            spManager.startSerialPort(checkPort, isAscii, baseReader,baudRate);
+            spManager.startSerialPort(checkPort, isAscii, baseReader, baudRate);
             changeCode(isAscii);
+            boolean isOpen = spManager.isStart(checkPort);
+            Log.d("OpenCommunication", "串口名称：" + checkPort + "  连接状态：" + isOpen);
+            return isOpen;
         }
-
-
+        Log.d("OpenCommunication", "未找到串口，串口名称：" + checkPort);
+        return false;
     }
-
-
 
 
     public void close() {
@@ -151,7 +151,6 @@ public class OpenCommunication  {
             return;
         }
         spManager.setReadCode(currentPort, isAscii);
-
     }
 
 

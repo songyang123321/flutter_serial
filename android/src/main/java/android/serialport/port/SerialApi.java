@@ -66,7 +66,6 @@ class SerialApi {
         try {
             serialPort = new SerialPort(new File(port), baudRate, 0);
             if (serialPort == null) {
-
                 log(SerialApiManager.port, port, isAscii, new StringBuffer().append("Boot failure：SerialPort == null"));
             } else {
                 inputStream = serialPort.getInputStream();

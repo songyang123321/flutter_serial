@@ -476,11 +476,12 @@ class _HomePageState extends State<HomePage> {
               children: [
                 button(
                     name: "Open",
-                    onPress: () {
-                      flutterSerial.openPort(
+                    onPress: () async{
+                      bool? b = await flutterSerial.openPort(
                           dataFormat: format,
                           serialPort: selectedPort,
                           baudRate: selectedBaudRate);
+                      print("$b");
                     }),
                 button(
                     name: "Close",

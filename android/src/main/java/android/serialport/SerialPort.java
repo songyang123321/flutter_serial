@@ -1,17 +1,17 @@
 /*
  * Copyright 2009 Cedric Priscal
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 
 package android.serialport;
@@ -46,8 +46,7 @@ public class SerialPort {
                 /* Missing read/write permission, trying to chmod the file */
                 Process su;
                 su = Runtime.getRuntime().exec("/system/xbin/su");
-                String cmd = "chmod 777 " + device.getAbsolutePath() + "\n"
-                        + "exit\n";
+                String cmd = "chmod 777 " + device.getAbsolutePath() + "\n" + "exit\n";
                 su.getOutputStream().write(cmd.getBytes());
                 if ((su.waitFor() != 0) || !device.canRead() || !device.canWrite()) {
                     throw new SecurityException();
@@ -57,7 +56,6 @@ public class SerialPort {
                 throw new SecurityException();
             }
         }
-
         mFd = open(device.getAbsolutePath(), baudrate, flags);
         if (mFd == null) {
             Log.e(TAG, "native open returns null");

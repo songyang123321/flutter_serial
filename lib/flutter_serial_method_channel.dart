@@ -9,12 +9,10 @@ import 'flutter_serial_platform_interface.dart';
 class MethodChannelFlutterSerial extends FlutterSerialPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel(
-      "dev.ak.flutter_serial/embedded_serial_method_channel");
+  final methodChannel = const MethodChannel("dev.ak.flutter_serial/embedded_serial_method_channel");
 
   ///EventChannel for opening the inputStream and OutputStream
-  final eventChannel =
-      const EventChannel("dev.ak.flutter_serial/embedded_serial_event_channel");
+  final eventChannel = const EventChannel("dev.ak.flutter_serial/embedded_serial_event_channel");
 
   ///Once this method is called, Operations like [openPort],[closePort] etc...
   ///result will be return from this stream
@@ -22,9 +20,9 @@ class MethodChannelFlutterSerial extends FlutterSerialPlatform {
   ///[startSerial] : return type [SerialResponse]
   @override
   Stream<SerialResponse> startSerial() {
-    Stream<SerialResponse> data = eventChannel.receiveBroadcastStream().map(
-        (dynamic result) =>
-            SerialResponse.fromMap(Map<String, String>.from(result)));
+    Stream<SerialResponse> data = eventChannel
+        .receiveBroadcastStream()
+        .map((dynamic result) => SerialResponse.fromMap(Map<String, String>.from(result)));
 
     return data;
   }
@@ -34,8 +32,7 @@ class MethodChannelFlutterSerial extends FlutterSerialPlatform {
   ///[getAvailablePorts] : return type [List] of [String]
   @override
   Future<List<String>?> getAvailablePorts() async {
-    List<String>? list = await methodChannel
-        .invokeListMethod<String>('embeddedSerial/availablePorts');
+    List<String>? list = await methodChannel.invokeListMethod<String>('embeddedSerial/availablePorts');
     return list;
   }
 
@@ -47,18 +44,14 @@ class MethodChannelFlutterSerial extends FlutterSerialPlatform {
   /// 3) And baud Rate
   /// Once the the port is opened the TX and RX is started
   @override
-  Future<String?> openPort(
-      {required DataFormat dataFormat,
-      required String serialPort,
-      required int baudRate}) async {
+  Future<bool?> openPort({required DataFormat dataFormat, required String serialPort, required int baudRate}) async {
     final argument = {
       "dataFormat": dataFormat == DataFormat.ASCII ? "true" : "false",
       "serialPort": serialPort,
       "baudRate": baudRate.toString(),
     };
-    final version = await methodChannel.invokeMethod<String>(
-        'embeddedSerial/open', argument);
-    return version;
+    final isOpen = await methodChannel.invokeMethod<bool>('embeddedSerial/open', argument);
+    return isOpen;
   }
 
   ///close the opened port which you have opened from [openPort] this method
@@ -66,8 +59,7 @@ class MethodChannelFlutterSerial extends FlutterSerialPlatform {
   ///Close the previous to open the new
   @override
   Future<String?> closePort() async {
-    final version =
-        await methodChannel.invokeMethod<String>('embeddedSerial/close');
+    final version = await methodChannel.invokeMethod<String>('embeddedSerial/close');
     return version;
   }
 
@@ -78,8 +70,7 @@ class MethodChannelFlutterSerial extends FlutterSerialPlatform {
     final argument = {
       "message": message,
     };
-    final version = await methodChannel.invokeMethod<String>(
-        'embeddedSerial/send', argument);
+    final version = await methodChannel.invokeMethod<String>('embeddedSerial/send', argument);
     return version;
   }
 
@@ -87,8 +78,7 @@ class MethodChannelFlutterSerial extends FlutterSerialPlatform {
   /// it will empty the previous operation log
   @override
   Future<String?> clearLog() async {
-    final version =
-        await methodChannel.invokeMethod<String>('embeddedSerial/clearLog');
+    final version = await methodChannel.invokeMethod<String>('embeddedSerial/clearLog');
     return version;
   }
 
@@ -96,8 +86,7 @@ class MethodChannelFlutterSerial extends FlutterSerialPlatform {
   /// all the previous RX data will be clear when you call this method
   @override
   Future<String?> clearRead() async {
-    final version =
-        await methodChannel.invokeMethod<String>('embeddedSerial/clearRead');
+    final version = await methodChannel.invokeMethod<String>('embeddedSerial/clearRead');
     return version;
   }
 
@@ -105,8 +94,7 @@ class MethodChannelFlutterSerial extends FlutterSerialPlatform {
   /// and clear all the background  threads from the memory.
   @override
   Future<String?> destroyResources() async {
-    final version =
-        await methodChannel.invokeMethod<String>('embeddedSerial/destroy');
+    final version = await methodChannel.invokeMethod<String>('embeddedSerial/destroy');
     return version;
   }
 }

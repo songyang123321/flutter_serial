@@ -34,7 +34,7 @@ abstract class FlutterSerialPlatform extends PlatformInterface {
   /// Thrown by operations that have not been implemented yet.
   /// a [UnsupportedError] all things considered. This mistake is just planned for
   /// use during improvement.
-  Future<String?> openPort(
+  Future<bool?> openPort(
       {required DataFormat dataFormat,
       required String serialPort,
       required int baudRate}) {

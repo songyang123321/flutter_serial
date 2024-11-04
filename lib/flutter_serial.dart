@@ -15,7 +15,7 @@ class FlutterSerial {
   /// specified.
   ///
   /// The [serialPort] and [baudRate] arguments cannot be null.
-  Future<String?> openPort(
+  Future<bool?> openPort(
       {DataFormat? dataFormat,
       required String serialPort,
       required int baudRate}) {
